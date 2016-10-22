@@ -27,7 +27,7 @@ class RasWxMusicbox:
     def gen_music_list(self):
         #最多显示10条歌曲信息
         music_list = ''
-        total = len(self.mp3_data)
+        total = 5
         for i in range(total):
             music_list += '**' + str(i) + '**' + u'专辑：' + self.mp3_data[i]['album_name'] + '\n' \
                         + u'艺术家：' + self.mp3_data[i]['artist'] + '\n' \
