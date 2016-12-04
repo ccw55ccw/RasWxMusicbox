@@ -83,7 +83,6 @@ def hello_world(message,session):
             session["url"] = music_info['mp3_url']
             session["song_name"] = music_info['song_name']
             session["artist"] = music_info['artist']
-            pyttsxtest.play('开始播放')
             play(mp3_url)
             return song_info
         except Exception,e:
