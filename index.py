@@ -41,6 +41,8 @@ def hello_world(message,session):
     content = message.content
     if content == 'aa':
         return myconst.aa_tips
+    if content == 'ad':
+        return myconst.ad_tips
     if content == 'tt':
         return [
             "微信你不懂爱",
@@ -76,9 +78,9 @@ def hello_world(message,session):
                     break
             if a != 200:
                 return myconst.aa_unfind_tips
-            song_info = u'正在播放:\n ' \
-                        + u'演唱： ' + music_info['artist'] + '\n' \
-                        + u'歌曲： ' + music_info['song_name']+ '\n' \
+            song_info = u'正在播放:\n' \
+                        + u'演唱：' + music_info['artist'] + '\n' \
+                        + u'歌曲：' + music_info['song_name']+'\n' \
                         + u'回复：1 ： 返回歌曲'
             session["url"] = music_info['mp3_url']
             session["song_name"] = music_info['song_name']
