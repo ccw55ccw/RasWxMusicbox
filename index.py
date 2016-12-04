@@ -99,10 +99,10 @@ def hello_world(message,session):
         #wxclient.upload_media('image',file(filepath))
         return detectBody.detectBody.stream_url
 
-    if 'ad ' == content:
+    if 'ad ' in content:
         tex = content.split('d ')[1]
         pyttsxtest.play(tex)
-        return
+        return tex
 
 
     return myconst.all_func_tips
