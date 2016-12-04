@@ -40,6 +40,7 @@ def play(tex):
         pass
     finally:
         subprocess.Popen(['mpg123', url])
+        return url
 
 if __name__ == "__main__":
     # token = get_token()

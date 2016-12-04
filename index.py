@@ -103,8 +103,12 @@ def hello_world(message,session):
 
     if 'ad ' in content:
         tex = content.split('d ')[1]
-        pyttsxtest.play(tex)
-        return tex
+        url = pyttsxtest.play(tex)
+        return [
+            "Pi语音",
+            "werobot-tornado-Pi",
+            url,
+        ]
 
 
     return myconst.all_func_tips
