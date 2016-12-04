@@ -10,9 +10,9 @@ import urllib
 import logging
 import property
 import myconst
+import pyttsxtest
 from werobot import client
 from detect2imgs import detectBody
-
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -82,6 +82,7 @@ def hello_world(message,session):
             session["url"] = music_info['mp3_url']
             session["song_name"] = music_info['song_name']
             session["artist"] = music_info['artist']
+            pyttsxtest.play('开始播放，'+song_name)
             play(mp3_url)
             return song_info
         except Exception,e:
@@ -97,6 +98,11 @@ def hello_world(message,session):
         filepath = detectBody.detectBody.get_newest_img()
         #wxclient.upload_media('image',file(filepath))
         return detectBody.detectBody.stream_url
+
+    if 'ad ' == content:
+        tex = content.split('d ')[1]
+        pyttsxtest.play(tex)
+        return
 
 
     return myconst.all_func_tips
