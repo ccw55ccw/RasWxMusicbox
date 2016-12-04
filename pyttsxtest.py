@@ -33,7 +33,13 @@ def play(tex):
     # pygame.mixer.init()
     # track = pygame.mixer.music.load(filepath)
     # pygame.mixer.music.play()
-    subprocess.Popen(["mpg123", url])
+    try:
+        subprocess.Popen(['pkill', 'mpg123'])
+        time.sleep(.3)
+    except:
+        pass
+    finally:
+        subprocess.Popen(['mpg123', url])
     time.sleep(2)
 
 if __name__ == "__main__":
