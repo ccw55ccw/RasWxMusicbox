@@ -13,6 +13,7 @@ import myconst
 from werobot import client
 from detect2imgs import detectBody
 
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 # create a file handler
@@ -81,7 +82,7 @@ def hello_world(message,session):
             session["url"] = music_info['mp3_url']
             session["song_name"] = music_info['song_name']
             session["artist"] = music_info['artist']
-            #play(mp3_url)
+            play(mp3_url)
             return song_info
         except Exception,e:
             logger.error('search and play error', exc_info=True)

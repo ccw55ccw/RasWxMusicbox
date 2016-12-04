@@ -22,4 +22,4 @@ class detectBody:
 
     @classmethod
     def compare_imgs(self):
-        return compareImgs.calc_similar_by_path('../resources/imgs/test.jpg','../resources/imgs/test.jpg')
+        return compareImgs.calc_similar_by_path('../resources/imgs/test1.jpg','../resources/imgs/newest.jpg')

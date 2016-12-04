@@ -3,6 +3,7 @@
 # encoding=utf8
 
 import time
+import pyttsxtest
 from detect2imgs import detectBody
 
 
@@ -13,6 +14,8 @@ def run():
         print ff
         if ff < 0.75:
             print 'beep'
+            pyttsxtest.play('嘀嘀嘀')
+        print 'no'
         time.sleep(3)
 
 if __name__ == '__main__':

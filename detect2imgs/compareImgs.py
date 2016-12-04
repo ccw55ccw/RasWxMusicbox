@@ -2,7 +2,7 @@
 # Filename: histsimilar.py
 # -*- coding: utf-8 -*-
  
-import Image
+from PIL import Image
 
 def make_regalur_image(img, size = (256, 256)):
     return img.resize(size).convert('RGB')
