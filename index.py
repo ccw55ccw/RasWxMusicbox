@@ -7,21 +7,38 @@ import netease
 import subprocess
 import time
 import urllib
+import logging
+import property
+import myconst
+from werobot import client
+from detect2imgs import detectBody
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+# create a file handler
+handler = logging.FileHandler('hello.log')
+handler.setLevel(logging.INFO)
+# create a logging format
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+# add the handlers to the logger
+logger.addHandler(handler)\
+
+prop = property.parse('conf.prop')
 
 robot = werobot.WeRoBot(token='tokenhere',enable_session=True)
 
+wxclient = client.Client('wx49c0ee80455a9959','07b6943262c77b3dbdb18507492068ce')
+
 @robot.subscribe
 def subscribe(message):
-    return u'谢谢关注小五游侠订阅号！\n'+u'回复：a1->点歌台'+'\n'+u'其他功能敬请期待哈'
-
-
-
+    return myconst.subscribe_tips
 
 @robot.text
 def hello_world(message,session):
     content = message.content
-    if content == 'a1':
-        return u"这是一个通过微信公众号点歌的一个webAPP（您点的歌曲也会在我家小音箱播放），发送：a1+歌曲名（搜索歌曲）"
+    if content == 'aa':
+        return myconst.aa_tips
     if content == 'tt':
         return [
             "微信你不懂爱",
@@ -35,8 +52,8 @@ def hello_world(message,session):
             session.get('url'),
         ]
 
-    if 'a1+' in content:
-        song_name = content.split('+')[1]
+    if 'aa ' in content:
+        song_name = content.split('a ')[1]
         song_index = 0
         a = 0
         try:
@@ -56,20 +73,32 @@ def hello_world(message,session):
                         continue
                     break
             if a != 200:
-                return u'没找到这首歌。。。'
-            song_info = u'正在我家的小音箱播放:\n ' \
+                return myconst.aa_unfind_tips
+            song_info = u'正在播放:\n ' \
                         + u'演唱： ' + music_info['artist'] + '\n' \
                         + u'歌曲： ' + music_info['song_name']+ '\n' \
                         + u'回复：1 ： 返回歌曲'
             session["url"] = music_info['mp3_url']
             session["song_name"] = music_info['song_name']
             session["artist"] = music_info['artist']
-            play(mp3_url)
+            #play(mp3_url)
             return song_info
-        except:
-            return u'音乐搜索api出错，请换一首歌曲名称'
+        except Exception,e:
+            logger.error('search and play error', exc_info=True)
+            return myconst.aa_error_tips
 
-    return u'谢谢关注小五游侠订阅号！\n'+u'回复：a1->点歌台'+'\n'+u'其他功能敬请期待哈'
+    if 'ab' == content:
+        filepath = detectBody.detectBody.get_newest_img()
+        #wxclient.upload_media('image',file(filepath))
+        return detectBody.detectBody.snapshot_url
+
+    if 'ac' == content:
+        filepath = detectBody.detectBody.get_newest_img()
+        #wxclient.upload_media('image',file(filepath))
+        return detectBody.detectBody.stream_url
+
+
+    return myconst.all_func_tips
 
 
 
