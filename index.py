@@ -54,6 +54,13 @@ def hello_world(message,session):
             "http://weixin.com/budongai.mp3",
         ]
 
+    if '--' in content:
+        return [
+            "微信你不懂爱",
+            "龚琳娜最新力作",
+            "http://weixin.com/budongai.mp3",
+        ]
+
     # 查询到歌曲信息结果的返回
     if session.get('searching_ff') == 1 and content == '1':
         session['searching_ff'] = ''
@@ -97,7 +104,6 @@ def hello_world(message,session):
     if 'ad ' in content:
         tex = content.split('d ')[1]
         url = pyttsxtest.play(tex)
-        print urllib.urlencode(url)
         return [
             "Pi语音",
             "werobot-tornado-Pi",
