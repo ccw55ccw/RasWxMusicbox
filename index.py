@@ -16,6 +16,10 @@ import thread
 from werobot import client
 from detect2imgs import detectBody
 import yigeai
+import os
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -54,12 +58,11 @@ def hello_world(message,session):
             "http://weixin.com/budongai.mp3",
         ]
 
-    if '--' in content:
-        return [
-            "微信你不懂爱",
-            "龚琳娜最新力作",
-            "http://weixin.com/budongai.mp3",
-        ]
+    if '& ' in content:
+        volume = content.split('& ')[1]
+        # os.system('')
+        print u'音量设置为：'+volume
+        return myconst.aa_set_voice+volume+myconst.aa_set_voice_tips
 
     # 查询到歌曲信息结果的返回
     if session.get('searching_ff') == 1 and content == '1':
@@ -87,7 +90,10 @@ def hello_world(message,session):
     if 'aa ' in content:
         song_name = content.split('a ')[1]
         session['searching_ff'] = 1
-        thread.start_new_thread(search_song(session, song_name), ("Thread-1", 2, ))
+        try:
+            thread.start_new_thread(search_song(session, song_name), ("Thread-1", 2, ))
+        except Exception, e:
+            logger.error('play song error', exc_info=True)
         return u'正在搜索播放歌曲'+song_name+u'\n回复：1 查看结果'
 
 
@@ -109,19 +115,20 @@ def hello_world(message,session):
             "werobot-tornado-Pi",
             urllib.urlencode(url),
         ]
-
-    return yigeai.get_answer(content)
+    answer = yigeai.get_answer(content)
+    thread.start_new_thread(say_thread(answer), ("Thread-2", 4, ))
+    return answer
 
 
 @robot.voice
 def get_voice(messsage, session):
     media_id = messsage.media_id
-    return "公众号没认证，无法识别语音内容"
+    return u"公众号没认证，无法识别语音内容"
 
 @robot.image
 def get_image(messsage,session):
     media_id = messsage.media_id
-    return "公众号没认证，无法识别图片内容"
+    return u"公众号没认证，无法识别图片内容"
 
 def play(mp3_url):
     try:
@@ -133,6 +140,10 @@ def play(mp3_url):
         subprocess.Popen(['mpg123', mp3_url])
         # webbrowser.open(mp3_url)
 
+
+def say_thread(tex):
+    ttex = urllib.quote(tex.encode())
+    pyttsxtest.play(ttex)
 
 def search_song(session, song_name):
     song_index = 0
@@ -162,7 +173,7 @@ def search_song(session, song_name):
         session["url"] = music_info['mp3_url']
         session["song_name"] = music_info['song_name']
         session["artist"] = music_info['artist']
-        play(mp3_url)
+        # play(mp3_url)
         print 'playing...'
         session['song_info'] = song_info
         return song_info
